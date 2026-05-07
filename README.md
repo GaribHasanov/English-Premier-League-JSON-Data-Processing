@@ -4,8 +4,7 @@
 
 ---
 
-### Hi Friends
-
+### 
 In this project, I will demonstrate how to extract data from a semi-structured (JSON) dataset, parse and transform it, and finally load it into an Excel file.
 
 ### Steps:
