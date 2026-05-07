@@ -1,91 +1,86 @@
-# English Premier League (2017/2018) Data Pipeline
+# English Premier League - Season Match Stats (2017/2018)
 
 ## Project Overview
-This project demonstrates an end-to-end data pipeline using the **English Premier League 2017/2018 match dataset**. The goal is to extract semi-structured JSON data, transform it using Python (Pandas), and load it into an Excel file for analysis.
+This project demonstrates how to extract data from a semi-structured JSON dataset, parse it, transform it using Python (Pandas), and load the final structured data into an Excel file.
 
 ---
 
-## Objectives
-- Extract data from a JSON dataset
-- Parse and transform raw match data
-- Perform data cleaning and feature engineering
-- Determine half-time and full-time winners
-- Export final dataset to Excel
+## Steps
+1. Extract data from JSON dataset  
+2. Parse and transform data  
+3. Load data into Excel file  
 
 ---
 
-## Tech Stack
+## Tools Used
 
-- Python
-- Pandas
-- Jupyter Notebook
-- Excel
+- Jupyter Notebook  
+- Python (Pandas Library)  
 
 ---
 
-## Data Processing Steps
+## Dataset
 
-### 1. Data Extraction
-Load JSON dataset using Pandas:
-- Convert semi-structured JSON into DataFrame
+English Premier League - Season Match Stats 2017/2018  
 
-📌 Example:
 ![image](https://user-images.githubusercontent.com/60735401/215338209-e1eb446d-579c-473c-97a1-85ad94016394.png)
 
 ---
 
-### 2. Data Parsing
-- Convert JSON structure into readable tabular format
-- Use `orient="index"` for proper column alignment
+## 1. Data Extraction
 
-📌 Example:
+We start by loading the JSON dataset using Jupyter Notebook.
+
+- Import Pandas
+- Use `read_json()` to convert JSON into a DataFrame
+
+![image](https://user-images.githubusercontent.com/60735401/215338281-125577ec-7b93-42b4-925e-7cf42bf0f057.png)
+
+---
+
+## 2. Data Parsing
+
+The output is not structured properly because JSON keys are treated as indexes.
+
+To fix this:
+- Use `orient="index"`
+- Convert indexes into columns
+
+- `head(10)` → displays first 10 rows
+
 ![image](https://user-images.githubusercontent.com/60735401/215338309-c2a2f6b5-cc51-43fb-a62d-4b56578c5d6a.png)
 
 ---
 
-### 3. Data Transformation
-- Extract date, day, month, year, time from datetime column
-- Create new columns for match metadata
+## 3. Data Transformation
 
-📌 Example:
+We extract date-related fields from the `date_string` column.
+
+### Functions used:
+- `pd.to_datetime()`
+- `dt.date`
+- `dt.day`
+- `dt.month_name()`
+- `dt.year`
+- `dt.time`
+
+### New columns:
+- match_date  
+- day  
+- month  
+- year  
+- time  
+
 ![image](https://user-images.githubusercontent.com/60735401/215339766-5ca25ef0-9950-4083-9985-4b5a45c23043.png)
 
 ---
 
-### 4. Feature Engineering
-- Extract half-time and full-time scores
+## 4. Feature Engineering
+
+We format scores and create match results.
+
+- Add parentheses to scores
 - Create match result column
-- Determine winners based on scores
-
-📌 Example:
-![image](https://user-images.githubusercontent.com/60735401/215340660-b9121849-af3e-4b63-b0a4-3884f675f43.png)
-
----
-
-### 5. Winner Calculation Logic
-- Compare home vs away scores
-- Assign:
-  - Home team winner
-  - Away team winner
-  - Draw (if equal)
-
-📌 Example:
-![image](https://user-images.githubusercontent.com/60735401/215341174-64602342-33b3-40d0-a304-10619ed3360b.png)
-
----
-
-### 6. Final Dataset Preparation
-- Add final winner column
-- Select required columns
-- Rename columns for clarity
-
-📌 Example:
-![image](https://user-images.githubusercontent.com/60735401/215341201-d4871741-1d01-4dd0-9906-d961bcae2773.png)
-
----
-
-### 7. Export to Excel
-Final dataset is exported using Pandas:
 
 ```python
-df.to_excel('English_Premier_League.xlsx', sheet_name='English_League')
+df['match_result'] = df['home_team_name'] + ' ' + df['full_time_score'] + ' ' + df['away_team_name']
